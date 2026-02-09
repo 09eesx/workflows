@@ -1,39 +1,27 @@
 name: generate animation
 
 on:
-  # Her 24 saatte bir otomatik çalışır
   schedule:
-    - cron: "0 */24 * * *" 
-  
-  # Manuel olarak çalıştırmanıza olanak tanır
+    - cron: "0 0 * * *"
   workflow_dispatch:
-  
-  # Main branch'ine her push yapıldığında çalışır
-  push:
-    branches:
-    - main
-    
+
 permissions:
-  contents: write  
+  contents: write   # 🔴 BU SATIR EKSİKTİ
 
 jobs:
-  generate:
+  build:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
-    
+
     steps:
-      # Yılan animasyonunu oluşturur
-      - name: generate github-contribution-grid-snake.svg
-        uses: Platane/snk/svg-only@v3
+      - name: Generate snake animation
+        uses: Platane/snk@v3
         with:
           github_user_name: 09eesx
           outputs: |
             dist/github-contribution-grid-snake.svg
-            dist/github-contribution-grid-snake-dark.svg?palette=github-dark
-          
-      # Oluşturulan dosyayı 'output' branch'ine yükler
-      - name: push github-contribution-grid-snake.svg to the output branch
-        uses: crazy-max/ghaction-github-pages@v3.1.0
+
+      - name: Push snake to output branch
+        uses: crazy-max/ghaction-github-pages@v3
         with:
           target_branch: output
           build_dir: dist
